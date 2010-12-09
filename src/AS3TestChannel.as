@@ -28,6 +28,7 @@ package {
     import com.litl.testchannel.view.CardView;
     import com.litl.testchannel.view.ChannelView;
     import com.litl.testchannel.view.FocusView;
+    import com.litl.testchannel.view.TestView;
 
     [SWF(backgroundColor="0xffffff", width="1280", height="800", frameRate="21")]
     public class AS3TestChannel extends BaseChannel {
@@ -58,7 +59,6 @@ package {
 
             var channelView:ViewBase = new ChannelView(model);
             views[View.CHANNEL] = channelView;
-
         }
 
         /** @inheritDoc */
@@ -74,6 +74,21 @@ package {
         override protected function handleInitialize(e:InitializeMessage):void {
             service.channelTitle = CHANNEL_TITLE;
             service.channelItemCount = 5;
+        }
+
+        override protected function ensureView(newView:String):ViewBase {
+            var view:ViewBase = super.ensureView(newView);
+
+            if (view != currentView) {
+                if (currentView is TestView) {
+                    TestView(currentView).onPause();
+                }
+                if (view is TestView) {
+                    TestView(view).onResume();
+                }
+            }
+
+            return view;
         }
 
         override protected function onViewChanged(newView:String, newDetails:String, viewWidth:Number = 0, viewHeight:Number = 0):void {

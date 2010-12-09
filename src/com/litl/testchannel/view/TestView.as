@@ -54,6 +54,12 @@ package com.litl.testchannel.view {
             updateDisplay();
         }
 
+        public function onResume():void {
+        }
+
+        public function onPause():void {
+        }
+
         protected function addMessage(msg:String):void {
             model.addMessage(msg);
             messages.refresh();

@@ -42,12 +42,20 @@ package com.litl.testchannel.view {
 
             timer = new Timer(500, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);
+        }
 
-            model.service.addEventListener(UserInputMessage.MOVE_NEXT_ITEM, handleMove);
-            model.service.addEventListener(UserInputMessage.MOVE_PREVIOUS_ITEM, handleMove);
+        override public function onResume():void {
+            model.service.addEventListener(UserInputMessage.MOVE_NEXT_ITEM, handleMove, false, 0, true);
+            model.service.addEventListener(UserInputMessage.MOVE_PREVIOUS_ITEM, handleMove, false, 0, true);
 
             updateDisplay();
         }
+
+        override public function onPause():void {
+            model.service.removeEventListener(UserInputMessage.MOVE_NEXT_ITEM, handleMove);
+            model.service.removeEventListener(UserInputMessage.MOVE_PREVIOUS_ITEM, handleMove);
+        }
+
 
         private function handleMove(e:UserInputMessage):void {
             if (arrow && contains(arrow) && contains(arrowLabel)) {
