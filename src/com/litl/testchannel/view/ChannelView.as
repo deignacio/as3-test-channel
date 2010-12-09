@@ -24,11 +24,48 @@ package com.litl.testchannel.view {
     import com.litl.sdk.message.UserInputMessage;
     import com.litl.testchannel.model.TestModel;
 
+    import com.litl.testchannel.skin.DownArrow;
+    import com.litl.testchannel.skin.UpArrow;
+
+    import flash.display.Bitmap;
+    import flash.events.TimerEvent;
+    import flash.utils.Timer;
+
     public class ChannelView extends TestView {
+        protected var goTimer:Timer;
+        protected var pressedLabel:Label;
+        protected var heldLabel:Label;
+        protected var releasedLabel:Label;
+        protected var wheelLabel:Label;
+
+        protected var arrow:Bitmap;
+        protected var arrowCount:int;
+        protected var arrowLabel:Label;
+        protected var arrowTimer:Timer;
+
         public function ChannelView(model:TestModel) {
             super(model);
 
             messages.setSize(600, 600);
+
+            pressedLabel = new Label();
+            pressedLabel.move(50, 65);
+            pressedLabel.text = "go button pressed";
+            heldLabel = new Label();
+            heldLabel.move(50, 85);
+            heldLabel.text = "go button held";
+            releasedLabel = new Label();
+            releasedLabel.move(50, 105);
+            releasedLabel.text = "go button released";
+            wheelLabel = new Label();
+            wheelLabel.move(50, 125);
+            wheelLabel.text = "wheel enabled";
+
+            goTimer = new Timer(500, 1);
+            goTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onGoTimer);
+
+            arrowTimer = new Timer(500, 1);
+            arrowTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onArrowTimer);
 
             model.service.addEventListener(UserInputMessage.GO_BUTTON_HELD, onGoButton);
             model.service.addEventListener(UserInputMessage.GO_BUTTON_PRESSED, onGoButton);
@@ -47,11 +84,22 @@ package com.litl.testchannel.view {
         protected function onGoButton(e:UserInputMessage):void {
             switch (e.type) {
                 case UserInputMessage.GO_BUTTON_PRESSED:
+                    resetGoButtonDisplay();
+                    addChild(pressedLabel);
                     break;
                 case UserInputMessage.GO_BUTTON_HELD:
+                    addChild(heldLabel);
+                    if (_model.service.wheelEnabled) {
+                        removeChild(wheelLabel);
+                    } else {
+                        addChild(wheelLabel);
+                    }
                     _model.toggleWheel();
                     break;
                 case UserInputMessage.GO_BUTTON_RELEASED:
+                    addChild(releasedLabel);
+                    goTimer.reset();
+                    goTimer.start();
                     break;
                 default:
                     break;
@@ -60,8 +108,82 @@ package com.litl.testchannel.view {
             addMessage(e.type);
         }
 
+        protected function onGoTimer(e:TimerEvent):void {
+            resetGoButtonDisplay();
+        }
+
+        protected function resetGoButtonDisplay():void {
+            if (contains(pressedLabel)) {
+                removeChild(pressedLabel);
+            }
+
+            if (contains(heldLabel)) {
+                removeChild(heldLabel);
+            }
+
+            if (contains(releasedLabel)) {
+                removeChild(releasedLabel);
+            }
+        }
+
         protected function onWheel(e:UserInputMessage):void {
+            if (arrow && contains(arrow) && contains(arrowLabel)) {
+                removeChild(arrow);
+                removeChild(arrowLabel);
+            }
+
+            switch(e.type) {
+                case UserInputMessage.WHEEL_UP:
+                    if (arrow is UpArrow) {
+                        arrowCount++;
+                    } else {
+                        arrow = new UpArrow();
+                        arrowCount = 1;
+                    }
+                break;
+                case UserInputMessage.WHEEL_DOWN:
+                    if (arrow is DownArrow) {
+                        arrowCount++;
+                    } else {
+                        arrow = new DownArrow();
+                        arrowCount = 1;
+                    }
+                break;
+                default:
+                    arrow = null;
+                    arrowLabel = null;
+                    arrowCount = 0;
+                break;
+            }
+
+            arrowTimer.reset();
+
+            if (arrow) {
+                if (arrowCount == 1) {
+                    arrow.x = 180;
+                    arrow.y = 105;
+
+                    arrowLabel = new Label();
+                    arrowLabel.x = 240;
+                    arrowLabel.y = 150;
+                } else if (arrowCount > 1) {
+                    arrowLabel.text = "x" + arrowCount;
+                }
+
+                addChild(arrow);
+                addChild(arrowLabel);
+
+                arrowTimer.start();
+            }
+
             addMessage(e.type);
+        }
+
+        protected function onArrowTimer(e:TimerEvent):void {
+            if (arrow) {
+                removeChild(arrow);
+                removeChild(arrowLabel);
+            }
         }
     }
 }

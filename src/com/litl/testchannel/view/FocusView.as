@@ -22,6 +22,8 @@
 package com.litl.testchannel.view {
     import com.litl.control.Label;
     import com.litl.control.TextButton;
+    import com.litl.helpers.geolocate.GeoLocationEvent;
+    import com.litl.helpers.geolocate.GeoLocationService;
     import com.litl.sdk.enum.PropertyScope;
     import com.litl.sdk.message.OptionsStatusMessage;
     import com.litl.sdk.message.PropertyMessage;
@@ -32,6 +34,7 @@ package com.litl.testchannel.view {
 
     public class FocusView extends TestView {
         protected var zipcode:TextButton;
+        protected var closeOptions:TextButton;
 
         public function FocusView(model:TestModel) {
             super(model);
@@ -44,6 +47,11 @@ package com.litl.testchannel.view {
             zipcode.addEventListener(Event.SELECT, onZipcodeClick, false, 0, true);
             addChild(zipcode);
 
+            closeOptions = new TextButton();
+            closeOptions.move(250, 50);
+            closeOptions.text = "close options";
+            closeOptions.addEventListener(Event.SELECT, onCloseOptionsClick, false, 0, true);
+
             //model.service.addEventListener(PropertyMessage.PROPERTY_CHANGED, onProperties);
             model.service.addEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions);
         }
@@ -55,10 +63,25 @@ package com.litl.testchannel.view {
         }
 
         protected function onZipcodeClick(e:Event):void {
-            zipcode.text = "device zipcode = " + _model.service.zipCode;
+            var geoloc:GeoLocationService = new GeoLocationService();
+            geoloc.addEventListener(GeoLocationEvent.UPDATE, onGeoLocationUpdate);
+            geoloc.update();
+        }
+
+        protected function onGeoLocationUpdate(e:GeoLocationEvent):void {
+            zipcode.text = "geolocation data:  " + e.location.postcode + ", " + e.location.timezone + ".  " + e.location.city + ", " + e.location.state;
+        }
+
+        protected function onCloseOptionsClick(e:Event):void {
+            _model.service.closeOptions();
         }
 
         protected function onOptions(e:OptionsStatusMessage):void {
+            if (e.optionsOpen) {
+                addChild(closeOptions);
+            } else {
+                removeChild(closeOptions);
+            }
             addMessage("options open? " + e.optionsOpen);
         }
 

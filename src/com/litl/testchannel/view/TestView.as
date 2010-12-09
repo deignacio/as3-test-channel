@@ -67,6 +67,7 @@ package com.litl.testchannel.view {
         override public function setSize(newWidth:Number, newHeight:Number):void {
             super.setSize(newWidth, newHeight);
 
+            graphics.clear();
             graphics.beginFill(0x76d5db);
             graphics.drawRect(0, 0, newWidth, newHeight);
             graphics.endFill();

@@ -19,44 +19,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+package com.litl.testchannel.skin {
+    import flash.display.Bitmap;
 
-package com.litl.testchannel.model {
-    import com.litl.sdk.service.LitlService;
-
-    public class TestModel {
-        protected var _service:LitlService;
-
-        protected var _messages:Array;
-
-        public function TestModel(service:LitlService) {
-            _service = service;
-
-            _messages = new Array();
-        }
-
-        public function get service():LitlService {
-            return _service;
-        }
-
-        public function setTitle(value:String):void {
-            _service.channelTitle = value;
-        }
-
-        public function toggleWheel():void {
-            if (_service.wheelEnabled) {
-                _service.disableWheel();
-            } else {
-                _service.enableWheel();
-            }
-        }
-
-        public function get messages():Array {
-            return _messages;
-        }
-
-        public function addMessage(msg:String):void {
-            var now:Date = new Date();
-            _messages.unshift("[" + now.getTime() + "]" + msg);
-        }
+    [Embed(source="/../assets/up_arrow_50.png")]
+    public class UpArrow extends Bitmap {
     }
 }

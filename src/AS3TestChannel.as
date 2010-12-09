@@ -73,7 +73,7 @@ package {
          */
         override protected function handleInitialize(e:InitializeMessage):void {
             service.channelTitle = CHANNEL_TITLE;
-            model.itemCount = 5;
+            service.channelItemCount = 5;
         }
 
         override protected function onViewChanged(newView:String, newDetails:String, viewWidth:Number = 0, viewHeight:Number = 0):void {
