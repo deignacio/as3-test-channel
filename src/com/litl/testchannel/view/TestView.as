@@ -27,14 +27,14 @@ package com.litl.testchannel.view {
     import com.litl.testchannel.model.TestModel;
 
     public class TestView extends ViewBase {
-        protected var _model:TestModel;
+        protected var model:TestModel;
         protected var viewLabel:Label;
         protected var sizeLabel:Label;
 
         protected var messages:VerticalList;
 
         public function TestView(model:TestModel) {
-            _model = model;
+            this.model = model;
 
             viewLabel = new Label();
             viewLabel.move(25, 10);
@@ -49,13 +49,13 @@ package com.litl.testchannel.view {
             messages.itemSize = 20;
             messages.setSize(400, 100);
             messages.move(10, 60);
-            messages.dataProvider = _model.messages;
+            messages.dataProvider = model.messages;
             //addChild(messages);
             updateDisplay();
         }
 
         protected function addMessage(msg:String):void {
-            _model.addMessage(msg);
+            model.addMessage(msg);
             messages.refresh();
         }
 

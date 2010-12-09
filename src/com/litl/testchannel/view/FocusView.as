@@ -73,7 +73,7 @@ package com.litl.testchannel.view {
         }
 
         protected function onCloseOptionsClick(e:Event):void {
-            _model.service.closeOptions();
+            model.service.closeOptions();
         }
 
         protected function onOptions(e:OptionsStatusMessage):void {

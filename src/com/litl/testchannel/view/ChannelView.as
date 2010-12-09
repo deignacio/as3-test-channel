@@ -89,12 +89,12 @@ package com.litl.testchannel.view {
                     break;
                 case UserInputMessage.GO_BUTTON_HELD:
                     addChild(heldLabel);
-                    if (_model.service.wheelEnabled) {
+                    if (model.service.wheelEnabled) {
                         removeChild(wheelLabel);
                     } else {
                         addChild(wheelLabel);
                     }
-                    _model.toggleWheel();
+                    model.toggleWheel();
                     break;
                 case UserInputMessage.GO_BUTTON_RELEASED:
                     addChild(releasedLabel);
