@@ -1,0 +1,10 @@
+*~
+build.properties
+build/
+.actionScriptProperties
+*.iml
+.as3_classpath
+.flexLibProperties
+.project
+formatting.properties
+.settings/
