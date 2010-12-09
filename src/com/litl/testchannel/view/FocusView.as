@@ -44,16 +44,23 @@ package com.litl.testchannel.view {
             zipcode = new TextButton();
             zipcode.move(250, 20);
             zipcode.text = "click to refresh zipcode";
-            zipcode.addEventListener(Event.SELECT, onZipcodeClick, false, 0, true);
             addChild(zipcode);
 
             closeOptions = new TextButton();
             closeOptions.move(250, 50);
             closeOptions.text = "close options";
-            closeOptions.addEventListener(Event.SELECT, onCloseOptionsClick, false, 0, true);
+        }
 
-            //model.service.addEventListener(PropertyMessage.PROPERTY_CHANGED, onProperties);
-            model.service.addEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions);
+        override public function onResume():void {
+            zipcode.addEventListener(Event.SELECT, onZipcodeClick, false, 0, true);
+            closeOptions.addEventListener(Event.SELECT, onCloseOptionsClick, false, 0, true);
+            model.service.addEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false, 0, true);
+        }
+
+        override public function onPause():void {
+            zipcode.removeEventListener(Event.SELECT, onZipcodeClick);
+            closeOptions.removeEventListener(Event.SELECT, onCloseOptionsClick);
+            model.service.removeEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false);
         }
 
         override protected function updateDisplay():void {
@@ -83,13 +90,6 @@ package com.litl.testchannel.view {
                 removeChild(closeOptions);
             }
             addMessage("options open? " + e.optionsOpen);
-        }
-
-        protected function onProperties(e:PropertyMessage):void {
-            if (e.propertyScope == PropertyScope.GLOBAL) {
-                trace("global properties changed.  refreshing zipcode");
-                zipcode.text = "device zipcode = " + _model.service.zipCode;
-            }
         }
     }
 }

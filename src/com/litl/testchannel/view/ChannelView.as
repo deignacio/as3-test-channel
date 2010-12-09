@@ -62,17 +62,28 @@ package com.litl.testchannel.view {
             wheelLabel.text = "wheel enabled";
 
             goTimer = new Timer(500, 1);
-            goTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onGoTimer);
 
             arrowTimer = new Timer(500, 1);
-            arrowTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onArrowTimer);
+        }
 
-            model.service.addEventListener(UserInputMessage.GO_BUTTON_HELD, onGoButton);
-            model.service.addEventListener(UserInputMessage.GO_BUTTON_PRESSED, onGoButton);
-            model.service.addEventListener(UserInputMessage.GO_BUTTON_RELEASED, onGoButton);
-            model.service.addEventListener(UserInputMessage.WHEEL_UP, onWheel);
-            model.service.addEventListener(UserInputMessage.WHEEL_DOWN, onWheel);
+        override public function onResume():void {
+            goTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onGoTimer, false, 0, true);
+            arrowTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onArrowTimer, false, 0, true);
+            model.service.addEventListener(UserInputMessage.GO_BUTTON_HELD, onGoButton, false, 0, true);
+            model.service.addEventListener(UserInputMessage.GO_BUTTON_PRESSED, onGoButton, false, 0, true);
+            model.service.addEventListener(UserInputMessage.GO_BUTTON_RELEASED, onGoButton, false, 0, true);
+            model.service.addEventListener(UserInputMessage.WHEEL_UP, onWheel, false, 0, true);
+            model.service.addEventListener(UserInputMessage.WHEEL_DOWN, onWheel, false, 0, true);
+        }
 
+        override public function onPause():void {
+            goTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onGoTimer);
+            arrowTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onArrowTimer);
+            model.service.removeEventListener(UserInputMessage.GO_BUTTON_HELD, onGoButton);
+            model.service.removeEventListener(UserInputMessage.GO_BUTTON_PRESSED, onGoButton);
+            model.service.removeEventListener(UserInputMessage.GO_BUTTON_RELEASED, onGoButton);
+            model.service.removeEventListener(UserInputMessage.WHEEL_UP, onWheel);
+            model.service.removeEventListener(UserInputMessage.WHEEL_DOWN, onWheel);
         }
 
         override protected function updateDisplay():void {
