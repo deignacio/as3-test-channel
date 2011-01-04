@@ -31,10 +31,13 @@ package com.litl.testchannel.view {
     import com.litl.testchannel.model.TestModel;
 
     import flash.events.Event;
+    import flash.net.navigateToURL;
 
     public class FocusView extends TestView {
         protected var zipcode:TextButton;
         protected var closeOptions:TextButton;
+        protected var openUrlButton:TextButton;
+        protected var navigateToURLButton:TextButton;
 
         public function FocusView(model:TestModel) {
             super(model);
@@ -49,18 +52,34 @@ package com.litl.testchannel.view {
             closeOptions = new TextButton();
             closeOptions.move(250, 50);
             closeOptions.text = "close options";
+
+            openUrlButton = new TextButton();
+            openUrlButton.move(250, 80);
+            openUrlButton.text = "use openURL";
+            addChild(openUrlButton);
+
+            navigateToURLButton = new TextButton();
+            navigateToURLButton.move(250, 110);
+            navigateToURLButton.text = "use navigateToURL";
+            addChild(navigateToURLButton);
+
+
         }
 
         override public function onResume():void {
             zipcode.addEventListener(Event.SELECT, onZipcodeClick, false, 0, true);
             closeOptions.addEventListener(Event.SELECT, onCloseOptionsClick, false, 0, true);
             model.service.addEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false, 0, true);
+            openUrlButton.addEventListener(Event.SELECT, onOpenUrl, false, 0, true);
+            navigateToURLButton.addEventListener(Event.SELECT, onNavigateToURL, false, 0, true);
         }
 
         override public function onPause():void {
             zipcode.removeEventListener(Event.SELECT, onZipcodeClick);
             closeOptions.removeEventListener(Event.SELECT, onCloseOptionsClick);
             model.service.removeEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false);
+            openUrlButton.removeEventListener(Event.SELECT, onOpenUrl);
+            navigateToURLButton.removeEventListener(Event.SELECT, onNavigateToURL);
         }
 
         override protected function updateDisplay():void {
@@ -90,6 +109,14 @@ package com.litl.testchannel.view {
                 removeChild(closeOptions);
             }
             addMessage("options open? " + e.optionsOpen);
+        }
+
+        protected function onOpenUrl(e:Event):void {
+            model.service.openURL("http://google.com");
+        }
+
+        protected function onNavigateToURL(e:Event):void {
+            navigateToURL("http://litl.com");
         }
     }
 }
