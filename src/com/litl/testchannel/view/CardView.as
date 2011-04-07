@@ -36,12 +36,25 @@ package com.litl.testchannel.view {
         protected var arrow:Bitmap;
         protected var arrowCount:int;
         protected var arrowLabel:Label;
+        protected var _slideshowKey:String;
 
         public function CardView(model:TestModel) {
             super(model);
 
+            slideshowKey = "";
+
             timer = new Timer(500, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);
+        }
+
+        public function set slideshowKey(value:String):void {
+            _slideshowKey = value;
+
+            this.updateDisplay();
+        }
+
+        public function get slideshowKey():String {
+            return _slideshowKey;
         }
 
         override public function onResume():void {
@@ -111,7 +124,7 @@ package com.litl.testchannel.view {
         override protected function updateDisplay():void {
             super.updateDisplay();
 
-            viewLabel.text = "card view";
+            viewLabel.text = "card view " + slideshowKey;
         }
 
         protected function onTimer(e:TimerEvent):void {
