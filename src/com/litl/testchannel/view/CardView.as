@@ -124,7 +124,8 @@ package com.litl.testchannel.view {
         override protected function updateDisplay():void {
             super.updateDisplay();
 
-            viewLabel.text = "card view " + slideshowKey;
+            viewLabel.text = slideshowKey;
+            viewLabel.validateNow();
         }
 
         protected function onTimer(e:TimerEvent):void {

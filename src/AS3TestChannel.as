@@ -60,6 +60,7 @@ import mx.collections.ArrayCollection;
         override protected function registerViews():void {
             var cardView:ViewBase = new CardView(model);
             views[View.CARD] = cardView;
+            cardView.setSize(296,152);
 
             var focusView:ViewBase = new FocusView(model);
             views[View.FOCUS] = focusView;
@@ -109,6 +110,7 @@ import mx.collections.ArrayCollection;
 
         protected function onSlideImageRequested(event:SlideImageRequestedMessage):void {
             var cardView:CardView = views[View.CARD] as CardView;
+
             cardView.slideshowKey = event.key;
             service.addSlideImage(event.key, cardView);
         }
