@@ -19,7 +19,7 @@
   ~ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
   ~ IN THE SOFTWARE.
   -->
-<project basedir="./" default="build-debug-swf" name="As3TestChannel">
+<project basedir="./" default="build-debug-swf" name="AS3TestChannel">
   <property file="${basedir}/project.properties"/>
   <property name="build.properties.path" value="${basedir}/build.properties"/>
   <property file="${build.properties.path}"/>
