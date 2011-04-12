@@ -24,6 +24,7 @@ package {
     import com.litl.helpers.view.ViewBase;
     import com.litl.sdk.enum.View;
     import com.litl.sdk.message.InitializeMessage;
+    import com.litl.sdk.message.InitializeSlideshowMessage;
     import com.litl.sdk.message.SlideImageRequestedMessage;
     import com.litl.sdk.message.SlidesChangedMessage;
     import com.litl.testchannel.model.TestModel;
@@ -86,6 +87,9 @@ import mx.collections.ArrayCollection;
             slideshowTimer = new Timer(5 * 60 * 1000);
             slideshowTimer.addEventListener(TimerEvent.TIMER, onSlideshowTimer);
             slideshowTimer.start();
+        }
+
+        override protected function handleInitializeSlideshow(e:InitializeSlideshowMessage):void {
             setSlides();
         }
 
@@ -137,8 +141,6 @@ import mx.collections.ArrayCollection;
 
         override protected function onViewChanged(newView:String, newDetails:String, viewWidth:Number = 0, viewHeight:Number = 0):void {
             model.addMessage(newView + ":"+ newDetails + ", " + viewWidth + "x" + viewHeight);
-
-            setSlides();
         }
     }
 }
