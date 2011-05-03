@@ -30,11 +30,14 @@ package com.litl.testchannel.view {
         protected var model:TestModel;
         protected var viewLabel:Label;
         protected var sizeLabel:Label;
+        protected var _slideshowKey:String;
 
         protected var messages:VerticalList;
 
         public function TestView(model:TestModel) {
             this.model = model;
+
+            _slideshowKey = "";
 
             viewLabel = new Label();
             viewLabel.move(25, 10);
@@ -68,6 +71,9 @@ package com.litl.testchannel.view {
         protected function updateDisplay():void {
             messages.refresh();
             sizeLabel.text = "(" + width + ", " + height + ")";
+
+            viewLabel.text = slideshowKey;
+            viewLabel.validateNow();
         }
 
         override public function setSize(newWidth:Number, newHeight:Number):void {
@@ -79,6 +85,16 @@ package com.litl.testchannel.view {
             graphics.endFill();
 
             updateDisplay();
+        }
+
+        public function set slideshowKey(value:String):void {
+            _slideshowKey = value;
+
+            this.updateDisplay();
+        }
+
+        public function get slideshowKey():String {
+            return _slideshowKey;
         }
     }
 }

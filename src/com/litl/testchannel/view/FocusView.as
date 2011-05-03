@@ -107,7 +107,9 @@ package com.litl.testchannel.view {
             if (e.optionsOpen) {
                 addChild(closeOptions);
             } else {
-                removeChild(closeOptions);
+                if (contains(closeOptions)) {
+                    removeChild(closeOptions);
+                }
             }
             addMessage("options open? " + e.optionsOpen);
         }

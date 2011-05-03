@@ -24,9 +24,9 @@ package {
     import com.litl.helpers.view.ViewBase;
     import com.litl.sdk.enum.View;
     import com.litl.sdk.message.InitializeMessage;
-    import com.litl.sdk.message.InitializeSlideshowMessage;
-    import com.litl.sdk.message.SlideImageRequestedMessage;
-    import com.litl.sdk.message.SlidesChangedMessage;
+    import com.litl.sdk.message.InitializeUpdateMessage;
+    import com.litl.sdk.message.ImageRequestedMessage;
+    import com.litl.sdk.message.ImagesChangedMessage;
     import com.litl.testchannel.model.TestModel;
     import com.litl.testchannel.view.CardView;
     import com.litl.testchannel.view.ChannelView;
@@ -46,7 +46,7 @@ import mx.collections.ArrayCollection;
         public static const CHANNEL_HAS_OPTIONS:Boolean = true;
 
         protected var model:TestModel;
-        protected var slideshowTimer:Timer;
+        protected var updateTimer:Timer;
 
         public function AS3TestChannel() {
             super();
@@ -68,6 +68,7 @@ import mx.collections.ArrayCollection;
 
             var channelView:ViewBase = new ChannelView(model);
             views[View.CHANNEL] = channelView;
+            channelView.setSize(1280, 800);
         }
 
         /** @inheritDoc */
@@ -84,44 +85,60 @@ import mx.collections.ArrayCollection;
             service.channelTitle = CHANNEL_TITLE;
             service.channelItemCount = 5;
 
-            slideshowTimer = new Timer(5 * 60 * 1000);
-            slideshowTimer.addEventListener(TimerEvent.TIMER, onSlideshowTimer);
-            slideshowTimer.start();
+            updateTimer = new Timer(5 * 60 * 1000);
+            updateTimer.addEventListener(TimerEvent.TIMER, onUpdateTimer);
+            updateTimer.start();
         }
 
-        override protected function handleInitializeSlideshow(e:InitializeSlideshowMessage):void {
-            setSlides();
+        override protected function handleInitializeUpdate(e:InitializeUpdateMessage):void {
+            setImages();
         }
 
-        protected function onSlideshowTimer(event:TimerEvent):void {
-            setSlides();
+        protected function onUpdateTimer(event:TimerEvent):void {
+            setImages();
         }
 
-        protected function setSlides():void {
-            service.addEventListener(SlidesChangedMessage.SLIDES_CHANGED, onSlidesChanged);
-            service.addEventListener(SlideImageRequestedMessage.SLIDE_IMAGE_REQUESTED, onSlideImageRequested);
+        protected function setImages():void {
+            service.addEventListener(ImagesChangedMessage.IMAGES_CHANGED, onImagesChanged);
+            service.addEventListener(ImageRequestedMessage.IMAGE_REQUESTED, onImageRequested);
 
             var now:Date = new Date();
             now.setSeconds(0);
+
+            var selectorKey:String = "selector" + now.toLocaleString();
+            var backgroundKey:String = null; //"background" + now.toLocaleString();
+            var foregroundKey:String = null; //"foreground" + now.toLocaleString();
 
             var slides:Array = new Array();
             for (var i:int = 0; i < 5; ++i) {
                 slides.push(now.toLocaleString());
                 now.setMinutes(now.getMinutes() + 1);
             }
-            service.setSlides(slides);
+            service.setImages(slides, selectorKey, backgroundKey, foregroundKey);
         }
 
-        protected function onSlideImageRequested(event:SlideImageRequestedMessage):void {
-            var cardView:CardView = views[View.CARD] as CardView;
+        protected function onImageRequested(event:ImageRequestedMessage):void {
+            var key:String = event.key;
+            if (key.search("selector") != -1) {
+                var channelView:ChannelView = views[View.CHANNEL] as ChannelView;
+                channelView.slideshowKey = key;
+                service.addImage(key, channelView, 800, 600);
+//            } else if (key.search("background") != -1) {
 
-            cardView.slideshowKey = event.key;
-            service.addSlideImage(event.key, cardView);
+//            } else if (key.search("foreground") != -1) {
+
+            } else {
+                var cardView:CardView = views[View.CARD] as CardView;
+
+                cardView.slideshowKey = key;
+                service.addImage(key, cardView);
+            }
+
         }
 
-        protected function onSlidesChanged(event:SlidesChangedMessage):void {
-            service.removeEventListener(SlidesChangedMessage.SLIDES_CHANGED, onSlidesChanged);
-            service.removeEventListener(SlideImageRequestedMessage.SLIDE_IMAGE_REQUESTED, onSlideImageRequested);
+        protected function onImagesChanged(event:ImagesChangedMessage):void {
+            service.removeEventListener(ImagesChangedMessage.IMAGES_CHANGED, onImagesChanged);
+            service.removeEventListener(ImageRequestedMessage.IMAGE_REQUESTED, onImageRequested);
         }
 
         override protected function ensureView(newView:String):ViewBase {
