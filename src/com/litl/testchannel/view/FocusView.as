@@ -20,11 +20,14 @@
  * IN THE SOFTWARE.
  */
 package com.litl.testchannel.view {
+    import com.litl.control.DropDownList;
     import com.litl.control.Label;
     import com.litl.control.TextButton;
+    import com.litl.control.listclasses.SelectableItemRenderer;
     import com.litl.helpers.geolocate.GeoLocationEvent;
     import com.litl.helpers.geolocate.GeoLocationService;
     import com.litl.sdk.enum.PropertyScope;
+    import com.litl.sdk.enum.UpdateProfile;
     import com.litl.sdk.message.OptionsStatusMessage;
     import com.litl.sdk.message.PropertyMessage;
     import com.litl.sdk.service.LitlService;
@@ -39,6 +42,7 @@ package com.litl.testchannel.view {
         protected var closeOptions:TextButton;
         protected var openUrlButton:TextButton;
         protected var navigateToURLButton:TextButton;
+        protected var updateProfileDropdown:DropDownList;
 
         public function FocusView(model:TestModel, color:uint) {
             super(model, color);
@@ -64,7 +68,17 @@ package com.litl.testchannel.view {
             navigateToURLButton.text = "use navigateToURL";
             addChild(navigateToURLButton);
 
-
+            var profiles:Array = [ UpdateProfile.DAILY,
+                                   UpdateProfile.HOURLY,
+                                   UpdateProfile.FREQUENTLY,
+                                   UpdateProfile.LIVE ];
+            updateProfileDropdown = new DropDownList();
+            updateProfileDropdown.dataProvider = profiles;
+            updateProfileDropdown.itemRenderer = SelectableItemRenderer;
+            updateProfileDropdown.move(250, 150);
+            updateProfileDropdown.setStyle("dropDownWidth", 240);
+            updateProfileDropdown.setSize(200, 26);
+            addChild(updateProfileDropdown);
         }
 
         override public function onResume():void {
@@ -73,6 +87,7 @@ package com.litl.testchannel.view {
             model.service.addEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false, 0, true);
             openUrlButton.addEventListener(Event.SELECT, onOpenUrl, false, 0, true);
             navigateToURLButton.addEventListener(Event.SELECT, onNavigateToURL, false, 0, true);
+            updateProfileDropdown.addEventListener(Event.SELECT, onUpdateProfileSelect, false, 0, true);
         }
 
         override public function onPause():void {
@@ -81,6 +96,7 @@ package com.litl.testchannel.view {
             model.service.removeEventListener(OptionsStatusMessage.OPTIONS_STATUS, onOptions, false);
             openUrlButton.removeEventListener(Event.SELECT, onOpenUrl);
             navigateToURLButton.removeEventListener(Event.SELECT, onNavigateToURL);
+            updateProfileDropdown.removeEventListener(Event.SELECT, onUpdateProfileSelect);
         }
 
         override protected function updateDisplay():void {
@@ -121,6 +137,11 @@ package com.litl.testchannel.view {
         protected function onNavigateToURL(e:Event):void {
             var request:URLRequest = new URLRequest("http://litl.com");
             navigateToURL(request);
+        }
+
+        protected function onUpdateProfileSelect(e:Event):void {
+            var updateProfile:String = updateProfileDropdown.selectedItem as String;
+            model.service.setUpdateProfile(updateProfile);
         }
     }
 }
