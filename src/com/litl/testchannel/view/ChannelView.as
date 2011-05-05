@@ -43,8 +43,8 @@ package com.litl.testchannel.view {
         protected var arrowLabel:Label;
         protected var arrowTimer:Timer;
 
-        public function ChannelView(model:TestModel) {
-            super(model);
+        public function ChannelView(model:TestModel, color:uint) {
+            super(model, color);
 
             messages.setSize(600, 600);
 

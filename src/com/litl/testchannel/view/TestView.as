@@ -31,10 +31,12 @@ package com.litl.testchannel.view {
         protected var viewLabel:Label;
         protected var sizeLabel:Label;
         protected var _slideshowKey:String;
+        protected var _color:uint;
 
         protected var messages:VerticalList;
 
-        public function TestView(model:TestModel) {
+        public function TestView(model:TestModel, color:uint) {
+            this._color = color;
             this.model = model;
 
             _slideshowKey = "";
@@ -80,7 +82,7 @@ package com.litl.testchannel.view {
             super.setSize(newWidth, newHeight);
 
             graphics.clear();
-            graphics.beginFill(0x76d5db);
+            graphics.beginFill(this._color);
             graphics.drawRect(0, 0, newWidth, newHeight);
             graphics.endFill();
 

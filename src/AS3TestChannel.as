@@ -45,10 +45,22 @@ import mx.collections.ArrayCollection;
         public static const CHANNEL_VERSION:String = "0.1";
         public static const CHANNEL_HAS_OPTIONS:Boolean = true;
 
+        private static const COLORS:Array = [
+            0xe50000, 0x0343df, 0x15b01a,
+            0x888888, 0x9AD7DB, 0xae7181,
+            0xceb301, 0xf97306, 0xcae2fd,
+            0xff028d, 0x029386, 0x650021,
+            0x06c2ac, 0x7e1e9c, 0x89fe05,
+            0xd1b26f, 0x06470c, 0xff028d
+        ];
+        private var _color:uint;
+
         protected var model:TestModel;
         protected var updateTimer:Timer;
 
         public function AS3TestChannel() {
+            var pos:int = Math.random() * COLORS.length;
+            _color = COLORS[pos];
             super();
         }
 
@@ -59,14 +71,14 @@ import mx.collections.ArrayCollection;
 
         /** @inheritDoc */
         override protected function registerViews():void {
-            var cardView:ViewBase = new CardView(model);
+            var cardView:ViewBase = new CardView(model, _color);
             views[View.CARD] = cardView;
             cardView.setSize(296,152);
 
-            var focusView:ViewBase = new FocusView(model);
+            var focusView:ViewBase = new FocusView(model, _color);
             views[View.FOCUS] = focusView;
 
-            var channelView:ViewBase = new ChannelView(model);
+            var channelView:ViewBase = new ChannelView(model, _color);
             views[View.CHANNEL] = channelView;
             channelView.setSize(1280, 800);
         }

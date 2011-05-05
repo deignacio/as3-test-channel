@@ -37,8 +37,8 @@ package com.litl.testchannel.view {
         protected var arrowCount:int;
         protected var arrowLabel:Label;
 
-        public function CardView(model:TestModel) {
-            super(model);
+        public function CardView(model:TestModel, color:uint) {
+            super(model, color);
 
             timer = new Timer(500, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);

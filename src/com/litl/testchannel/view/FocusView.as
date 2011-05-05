@@ -40,8 +40,8 @@ package com.litl.testchannel.view {
         protected var openUrlButton:TextButton;
         protected var navigateToURLButton:TextButton;
 
-        public function FocusView(model:TestModel) {
-            super(model);
+        public function FocusView(model:TestModel, color:uint) {
+            super(model, color);
 
             messages.setSize(600, 600);
 
