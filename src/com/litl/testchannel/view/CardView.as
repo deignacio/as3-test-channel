@@ -32,6 +32,7 @@ package com.litl.testchannel.view {
     import flash.utils.Timer;
 
     public class CardView extends TestView {
+
         protected var timer:Timer;
         protected var arrow:Bitmap;
         protected var arrowCount:int;
@@ -39,6 +40,10 @@ package com.litl.testchannel.view {
 
         public function CardView(model:TestModel, color:uint) {
             super(model, color);
+
+            viewLabel.move(35, 75);
+            viewLabel.maxLines = 2;
+            viewLabel.setSize(150, 100);
 
             timer = new Timer(500, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);

@@ -33,7 +33,9 @@ package {
     import com.litl.testchannel.view.FocusView;
     import com.litl.testchannel.view.TestView;
 
+import flash.display.DisplayObject;
 import flash.events.TimerEvent;
+import flash.filters.GlowFilter;
 import flash.utils.Timer;
 
 import mx.collections.ArrayCollection;
@@ -46,6 +48,9 @@ import mx.collections.ArrayCollection;
         public static const CHANNEL_HAS_OPTIONS:Boolean = true;
 
         protected static const NUM_SLIDES:Number = 10;
+
+        [Embed(source="/../assets/tvframe.png")]
+        private static const Foreground:Class;
 
         private static const COLORS:Array = [
             0xe50000, 0x0343df, 0x15b01a,
@@ -120,7 +125,7 @@ import mx.collections.ArrayCollection;
 
             var selectorKey:String = "selector" + now.toLocaleString();
             var backgroundKey:String = null; //"background" + now.toLocaleString();
-            var foregroundKey:String = null; //"foreground" + now.toLocaleString();
+            var foregroundKey:String = "foreground" + now.toLocaleString();
 
             var slides:Array = new Array();
             for (var i:int = 0; i < NUM_SLIDES; ++i) {
@@ -138,8 +143,10 @@ import mx.collections.ArrayCollection;
                 service.addImage(key, channelView, 800, 600);
 //            } else if (key.search("background") != -1) {
 
-//            } else if (key.search("foreground") != -1) {
-
+            } else if (key.search("foreground") != -1) {
+                var foreground:DisplayObject = new Foreground();
+                foreground.filters = [ new GlowFilter(0, 0.4, 32, 32, 2, 2)];
+                service.addImage(key, foreground);
             } else {
                 var cardView:CardView = views[View.CARD] as CardView;
 
