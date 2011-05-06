@@ -45,6 +45,8 @@ import mx.collections.ArrayCollection;
         public static const CHANNEL_VERSION:String = "0.1";
         public static const CHANNEL_HAS_OPTIONS:Boolean = true;
 
+        protected static const NUM_SLIDES:Number = 10;
+
         private static const COLORS:Array = [
             0xe50000, 0x0343df, 0x15b01a,
             0x888888, 0x9AD7DB, 0xae7181,
@@ -121,7 +123,7 @@ import mx.collections.ArrayCollection;
             var foregroundKey:String = null; //"foreground" + now.toLocaleString();
 
             var slides:Array = new Array();
-            for (var i:int = 0; i < 5; ++i) {
+            for (var i:int = 0; i < NUM_SLIDES; ++i) {
                 slides.push(now.toLocaleString());
                 now.setMinutes(now.getMinutes() + 1);
             }
