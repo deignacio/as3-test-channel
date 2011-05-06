@@ -95,14 +95,13 @@ import mx.collections.ArrayCollection;
          */
         override protected function handleInitialize(e:InitializeMessage):void {
             service.channelTitle = CHANNEL_TITLE;
-            service.channelItemCount = 5;
-
             updateTimer = new Timer(5 * 60 * 1000);
             updateTimer.addEventListener(TimerEvent.TIMER, onUpdateTimer);
             updateTimer.start();
         }
 
         override protected function handleInitializeUpdate(e:InitializeUpdateMessage):void {
+            service.channelTitle = CHANNEL_TITLE;
             setImages();
         }
 
