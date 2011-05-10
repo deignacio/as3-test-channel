@@ -43,9 +43,9 @@ package com.litl.testchannel.view
         public function CardView(model:TestModel, color:uint) {
             super(model, color);
 
-            viewLabel.move(35, 75);
-            viewLabel.maxLines = 2;
-            viewLabel.setSize(150, 100);
+            viewLabel.move(35, 55);
+            viewLabel.maxLines = 4;
+            viewLabel.setSize(175, 100);
 
             timer = new Timer(500, 1);
             timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);
