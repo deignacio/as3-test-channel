@@ -23,8 +23,11 @@ package com.litl.testchannel.view
 {
     import com.litl.control.DropDownList;
     import com.litl.control.Label;
+    import com.litl.control.LitlMediaPlayer;
     import com.litl.control.TextButton;
     import com.litl.control.listclasses.SelectableItemRenderer;
+    import com.litl.control.playerclasses.AudioPlayerControlBar;
+    import com.litl.control.playerclasses.AudioPlayerFeatures;
     import com.litl.helpers.geolocate.GeoLocationEvent;
     import com.litl.helpers.geolocate.GeoLocationService;
     import com.litl.sdk.enum.PropertyScope;
@@ -45,6 +48,7 @@ package com.litl.testchannel.view
         protected var openUrlButton:TextButton;
         protected var navigateToURLButton:TextButton;
         protected var updateProfileDropdown:DropDownList;
+        protected var audioPlayer:LitlMediaPlayer;
 
         public function FocusView(model:TestModel, color:uint) {
             super(model, color);
@@ -81,6 +85,15 @@ package com.litl.testchannel.view
             updateProfileDropdown.setStyle("dropDownWidth", 240);
             updateProfileDropdown.setSize(200, 26);
             addChild(updateProfileDropdown);
+
+            audioPlayer = new LitlMediaPlayer();
+            audioPlayer.controlBarClass = AudioPlayerControlBar;
+            audioPlayer.features = AudioPlayerFeatures.PLAY_BUTTON | AudioPlayerFeatures.SCRUB_BAR;
+            audioPlayer.move(250, 200);
+            audioPlayer.setSize(400, 26);
+            audioPlayer.autoPlay = false;
+            audioPlayer.url = "testAudio.mp3";
+            addChild(audioPlayer);
         }
 
         override public function onResume():void {
