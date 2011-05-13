@@ -42,12 +42,14 @@
     <antcall target="build-swf">
       <param name="debug" value="false"/>
     </antcall>
+    <antcall target="copy-assets"/>
   </target>
 
   <target name="build-debug-swf" description="Build debug client swf">
     <antcall target="build-swf">
       <param name="debug" value="true"/>
     </antcall>
+    <antcall target="copy-assets"/>
   </target>
 
   <target name="build-swf" description="Build swf">
@@ -63,8 +65,8 @@
            locale="${locale}"
            strict="true"
            static-link-runtime-shared-libraries="true"
-            default-frame-rate="60"
-           >
+           default-frame-rate="60"
+           target-player="${playerglobal.version}">
 
       <!-- Get default compiler options. -->
       <load-config filename="${flex.sdk.home}/frameworks/flex-config.xml"/>
@@ -98,50 +100,11 @@
     </mxmlc>
   </target>
 
-  <target name="build-for-sdk" description="Create artifacts for sdk distribution"
-          depends="build-release-zip">
-    <property name="sdk.output.path" value="${output.path}/sdk"/>
-    <mkdir dir="${sdk.output.path}"/>
+  <target name="copy-assets" description="Copy assets to output path">
     <copy preservelastmodified="true"
-          todir="${sdk.output.path}/lib"
+          todir="${flex.output.path}/"
           verbose="true">
-      <fileset dir="${litl.sdk.core.path}/bin"/>
+      <fileset dir="${flex.deployassets}" />
     </copy>
-    <copy preservelastmodified="true"
-          todir="${sdk.output.path}/lib"
-          verbose="true">
-      <fileset dir="${litl.sdk.controls.path}/bin"/>
-    </copy>
-    <copy preservelastmodified="true"
-          todir="${sdk.output.path}/lib"
-          verbose="true">
-      <fileset dir="${litl.sdk.helpers.path}/bin"/>
-    </copy>
-    <copy preservelastmodified="true"
-          todir="${sdk.output.path}/src"
-          verbose="true">
-      <fileset dir="${flex.source}"/>
-    </copy>
-    <!--
-    <copy preservelastmodified="true"
-          todir="${sdk.output.path}/lib"
-          verbose="true">
-      <fileset dir="${flex.lib}"/>
-    </copy>
-    -->
-    <copy preservelastmodified="true"
-          todir="${sdk.output.path}/assets"
-          verbose="true">
-      <fileset dir="${flex.assets}" />
-    </copy>
-    <antcall target="ide-substitution-vars"/>
-  </target>
-
-<!-- creates the ide template substitution python file -->
-  <target name="ide-substitution-vars">
-    <concat destfile="${output.path}/ide-substitution-values.py">
-{ '@@{{main.file}}@@': '${flex.main.file}',
-  '@@{{project.name}}@@': '${ant.project.name}' }
-    </concat>
   </target>
 </project>
