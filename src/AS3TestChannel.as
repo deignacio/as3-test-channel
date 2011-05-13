@@ -19,29 +19,29 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package {
+package
+{
     import com.litl.helpers.channel.BaseChannel;
     import com.litl.helpers.view.ViewBase;
     import com.litl.sdk.enum.View;
-    import com.litl.sdk.message.InitializeMessage;
-    import com.litl.sdk.message.InitializeUpdateMessage;
     import com.litl.sdk.message.ImageRequestedMessage;
     import com.litl.sdk.message.ImagesChangedMessage;
+    import com.litl.sdk.message.InitializeMessage;
+    import com.litl.sdk.message.InitializeUpdateMessage;
     import com.litl.testchannel.model.TestModel;
     import com.litl.testchannel.view.CardView;
     import com.litl.testchannel.view.ChannelView;
     import com.litl.testchannel.view.FocusView;
     import com.litl.testchannel.view.TestView;
 
-import flash.display.DisplayObject;
-import flash.events.TimerEvent;
-import flash.filters.GlowFilter;
-import flash.utils.Timer;
+    import flash.display.DisplayObject;
+    import flash.events.TimerEvent;
+    import flash.filters.GlowFilter;
+    import flash.utils.Timer;
 
-import mx.collections.ArrayCollection;
-
-[SWF(backgroundColor="0xffffff", width="1280", height="800", frameRate="21")]
-    public class AS3TestChannel extends BaseChannel {
+    [SWF(backgroundColor="0xffffff", width="1280", height="800", frameRate="21")]
+    public class AS3TestChannel extends BaseChannel
+    {
         public static const CHANNEL_ID:String = "as3-test-channel";
         public static const CHANNEL_TITLE:String = "as3 test channel";
         public static const CHANNEL_VERSION:String = "0.1";
@@ -59,7 +59,7 @@ import mx.collections.ArrayCollection;
             0xff028d, 0x029386, 0x650021,
             0x06c2ac, 0x7e1e9c, 0x89fe05,
             0xd1b26f, 0x06470c, 0xff028d
-        ];
+            ];
         private var _color:uint;
 
         protected var model:TestModel;
@@ -80,7 +80,7 @@ import mx.collections.ArrayCollection;
         override protected function registerViews():void {
             var cardView:ViewBase = new CardView(model, _color);
             views[View.CARD] = cardView;
-            cardView.setSize(296,152);
+            cardView.setSize(296, 152);
 
             var focusView:ViewBase = new FocusView(model, _color);
             views[View.FOCUS] = focusView;
@@ -128,6 +128,7 @@ import mx.collections.ArrayCollection;
             var foregroundKey:String = "foreground" + now.toLocaleString();
 
             var slides:Array = new Array();
+
             for (var i:int = 0; i < NUM_SLIDES; ++i) {
                 slides.push(now.toLocaleString());
                 now.setMinutes(now.getMinutes() + 1);
@@ -137,17 +138,20 @@ import mx.collections.ArrayCollection;
 
         protected function onImageRequested(event:ImageRequestedMessage):void {
             var key:String = event.key;
+
             if (key.search("selector") != -1) {
                 var channelView:ChannelView = views[View.CHANNEL] as ChannelView;
                 channelView.slideshowKey = key;
                 service.addImage(key, channelView, 800, 600);
 //            } else if (key.search("background") != -1) {
 
-            } else if (key.search("foreground") != -1) {
+            }
+            else if (key.search("foreground") != -1) {
                 var foreground:DisplayObject = new Foreground();
                 foreground.filters = [ new GlowFilter(0, 0.4, 32, 32, 2, 2)];
                 service.addImage(key, foreground);
-            } else {
+            }
+            else {
                 var cardView:CardView = views[View.CARD] as CardView;
 
                 cardView.slideshowKey = key;
@@ -168,6 +172,7 @@ import mx.collections.ArrayCollection;
                 if (currentView is TestView) {
                     TestView(currentView).onPause();
                 }
+
                 if (view is TestView) {
                     TestView(view).onResume();
                 }
@@ -177,7 +182,7 @@ import mx.collections.ArrayCollection;
         }
 
         override protected function onViewChanged(newView:String, newDetails:String, viewWidth:Number = 0, viewHeight:Number = 0):void {
-            model.addMessage(newView + ":"+ newDetails + ", " + viewWidth + "x" + viewHeight);
+            model.addMessage(newView + ":" + newDetails + ", " + viewWidth + "x" + viewHeight);
         }
     }
 }

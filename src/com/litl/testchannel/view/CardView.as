@@ -19,7 +19,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.litl.testchannel.view {
+package com.litl.testchannel.view
+{
     import com.litl.control.Label;
     import com.litl.sdk.message.UserInputMessage;
     import com.litl.testchannel.model.TestModel;
@@ -31,7 +32,8 @@ package com.litl.testchannel.view {
     import flash.events.TimerEvent;
     import flash.utils.Timer;
 
-    public class CardView extends TestView {
+    public class CardView extends TestView
+    {
 
         protected var timer:Timer;
         protected var arrow:Bitmap;
@@ -61,35 +63,36 @@ package com.litl.testchannel.view {
             model.service.removeEventListener(UserInputMessage.MOVE_PREVIOUS_ITEM, handleMove);
         }
 
-
         private function handleMove(e:UserInputMessage):void {
             if (arrow && contains(arrow) && contains(arrowLabel)) {
                 removeChild(arrow);
                 removeChild(arrowLabel);
             }
 
-            switch(e.type) {
+            switch (e.type) {
                 case UserInputMessage.MOVE_NEXT_ITEM:
                     if (arrow is RightArrow) {
                         arrowCount++;
-                    } else {
+                    }
+                    else {
                         arrow = new RightArrow();
                         arrowCount = 1;
                     }
-                break;
+                    break;
                 case UserInputMessage.MOVE_PREVIOUS_ITEM:
                     if (arrow is LeftArrow) {
                         arrowCount++;
-                    } else {
+                    }
+                    else {
                         arrow = new LeftArrow();
                         arrowCount = 1;
                     }
-                break;
+                    break;
                 default:
                     arrow = null;
                     arrowLabel = null;
                     arrowCount = 0;
-                break;
+                    break;
             }
 
             timer.reset();
@@ -102,7 +105,8 @@ package com.litl.testchannel.view {
                     arrowLabel = new Label();
                     arrowLabel.x = 90;
                     arrowLabel.y = 75;
-                } else if (arrowCount > 1) {
+                }
+                else if (arrowCount > 1) {
                     arrowLabel.text = "x" + arrowCount;
                 }
 

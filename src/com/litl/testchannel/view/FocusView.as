@@ -19,7 +19,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.litl.testchannel.view {
+package com.litl.testchannel.view
+{
     import com.litl.control.DropDownList;
     import com.litl.control.Label;
     import com.litl.control.TextButton;
@@ -37,7 +38,8 @@ package com.litl.testchannel.view {
     import flash.net.URLRequest;
     import flash.net.navigateToURL;
 
-    public class FocusView extends TestView {
+    public class FocusView extends TestView
+    {
         protected var zipcode:TextButton;
         protected var closeOptions:TextButton;
         protected var openUrlButton:TextButton;
@@ -122,7 +124,8 @@ package com.litl.testchannel.view {
         protected function onOptions(e:OptionsStatusMessage):void {
             if (e.optionsOpen) {
                 addChild(closeOptions);
-            } else {
+            }
+            else {
                 if (contains(closeOptions)) {
                     removeChild(closeOptions);
                 }

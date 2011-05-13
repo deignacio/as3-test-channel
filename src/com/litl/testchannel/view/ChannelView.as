@@ -19,7 +19,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.litl.testchannel.view {
+package com.litl.testchannel.view
+{
     import com.litl.control.Label;
     import com.litl.sdk.message.UserInputMessage;
     import com.litl.testchannel.model.TestModel;
@@ -31,7 +32,8 @@ package com.litl.testchannel.view {
     import flash.events.TimerEvent;
     import flash.utils.Timer;
 
-    public class ChannelView extends TestView {
+    public class ChannelView extends TestView
+    {
         protected var goTimer:Timer;
         protected var pressedLabel:Label;
         protected var heldLabel:Label;
@@ -102,7 +104,8 @@ package com.litl.testchannel.view {
                     addChild(heldLabel);
                     if (model.service.wheelEnabled) {
                         removeChild(wheelLabel);
-                    } else {
+                    }
+                    else {
                         addChild(wheelLabel);
                     }
                     model.toggleWheel();
@@ -143,28 +146,30 @@ package com.litl.testchannel.view {
                 removeChild(arrowLabel);
             }
 
-            switch(e.type) {
+            switch (e.type) {
                 case UserInputMessage.WHEEL_UP:
                     if (arrow is UpArrow) {
                         arrowCount++;
-                    } else {
+                    }
+                    else {
                         arrow = new UpArrow();
                         arrowCount = 1;
                     }
-                break;
+                    break;
                 case UserInputMessage.WHEEL_DOWN:
                     if (arrow is DownArrow) {
                         arrowCount++;
-                    } else {
+                    }
+                    else {
                         arrow = new DownArrow();
                         arrowCount = 1;
                     }
-                break;
+                    break;
                 default:
                     arrow = null;
                     arrowLabel = null;
                     arrowCount = 0;
-                break;
+                    break;
             }
 
             arrowTimer.reset();
@@ -177,7 +182,8 @@ package com.litl.testchannel.view {
                     arrowLabel = new Label();
                     arrowLabel.x = 240;
                     arrowLabel.y = 150;
-                } else if (arrowCount > 1) {
+                }
+                else if (arrowCount > 1) {
                     arrowLabel.text = "x" + arrowCount;
                 }
 

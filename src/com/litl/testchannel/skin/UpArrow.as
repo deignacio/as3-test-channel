@@ -19,10 +19,12 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.litl.testchannel.skin {
+package com.litl.testchannel.skin
+{
     import flash.display.Bitmap;
 
     [Embed(source="/../assets/up_arrow_50.png")]
-    public class UpArrow extends Bitmap {
+    public class UpArrow extends Bitmap
+    {
     }
 }

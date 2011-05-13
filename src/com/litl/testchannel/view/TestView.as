@@ -20,13 +20,15 @@
  * IN THE SOFTWARE.
  */
 
-package com.litl.testchannel.view {
+package com.litl.testchannel.view
+{
     import com.litl.control.Label;
     import com.litl.control.VerticalList;
     import com.litl.helpers.view.ViewBase;
     import com.litl.testchannel.model.TestModel;
 
-    public class TestView extends ViewBase {
+    public class TestView extends ViewBase
+    {
         protected var model:TestModel;
         protected var viewLabel:Label;
         protected var sizeLabel:Label;

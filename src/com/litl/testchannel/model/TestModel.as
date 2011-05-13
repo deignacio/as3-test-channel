@@ -20,10 +20,12 @@
  * IN THE SOFTWARE.
  */
 
-package com.litl.testchannel.model {
+package com.litl.testchannel.model
+{
     import com.litl.sdk.service.LitlService;
 
-    public class TestModel {
+    public class TestModel
+    {
         protected var _service:LitlService;
 
         protected var _messages:Array;
@@ -45,7 +47,8 @@ package com.litl.testchannel.model {
         public function toggleWheel():void {
             if (_service.wheelEnabled) {
                 _service.disableWheel();
-            } else {
+            }
+            else {
                 _service.enableWheel();
             }
         }
