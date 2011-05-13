@@ -32,6 +32,7 @@ package com.litl.testchannel.view
     import com.litl.helpers.geolocate.GeoLocationService;
     import com.litl.sdk.enum.PropertyScope;
     import com.litl.sdk.enum.UpdateProfile;
+    import com.litl.sdk.message.ForceSaveStateMessage;
     import com.litl.sdk.message.OptionsStatusMessage;
     import com.litl.sdk.message.PropertyMessage;
     import com.litl.sdk.service.LitlService;
@@ -49,6 +50,7 @@ package com.litl.testchannel.view
         protected var navigateToURLButton:TextButton;
         protected var updateProfileDropdown:DropDownList;
         protected var audioPlayer:LitlMediaPlayer;
+        protected var audioFileDropdown:DropDownList;
 
         public function FocusView(model:TestModel, color:uint) {
             super(model, color);
@@ -84,6 +86,9 @@ package com.litl.testchannel.view
             updateProfileDropdown.move(250, 150);
             updateProfileDropdown.setStyle("dropDownWidth", 240);
             updateProfileDropdown.setSize(200, 26);
+
+            var updateProfile:String = model.service.deviceProperties.updateProfile;
+            updateProfileDropdown.selectedIndex = profiles.indexOf(updateProfile);
             addChild(updateProfileDropdown);
 
             audioPlayer = new LitlMediaPlayer();
@@ -92,8 +97,22 @@ package com.litl.testchannel.view
             audioPlayer.move(250, 200);
             audioPlayer.setSize(400, 26);
             audioPlayer.autoPlay = false;
-            audioPlayer.url = "testAudio.mp3";
             addChild(audioPlayer);
+
+            var files:Array = [ "",
+                                "testAudio0.mp3",
+                                "testAudio1.mp3",
+                                "testAudio2.mp3",
+                                "nonexistent" ];
+            audioFileDropdown = new DropDownList();
+            audioFileDropdown.dataProvider = files;
+            audioFileDropdown.itemRenderer = SelectableItemRenderer;
+            audioFileDropdown.move(150, 250);
+            audioFileDropdown.setSize(200, 26);
+            audioFileDropdown.setStyle("dropdownWidth", 100);
+            addChild(audioFileDropdown);
+
+            model.service.addEventListener(ForceSaveStateMessage.FORCE_SAVE_STATE, onForceSaveState, false, 0, true);
         }
 
         override public function onResume():void {
@@ -103,6 +122,7 @@ package com.litl.testchannel.view
             openUrlButton.addEventListener(Event.SELECT, onOpenUrl, false, 0, true);
             navigateToURLButton.addEventListener(Event.SELECT, onNavigateToURL, false, 0, true);
             updateProfileDropdown.addEventListener(Event.SELECT, onUpdateProfileSelect, false, 0, true);
+            audioFileDropdown.addEventListener(Event.SELECT, onAudioFileSelect, false, 0, true);
         }
 
         override public function onPause():void {
@@ -112,6 +132,7 @@ package com.litl.testchannel.view
             openUrlButton.removeEventListener(Event.SELECT, onOpenUrl);
             navigateToURLButton.removeEventListener(Event.SELECT, onNavigateToURL);
             updateProfileDropdown.removeEventListener(Event.SELECT, onUpdateProfileSelect);
+            audioFileDropdown.removeEventListener(Event.SELECT, onAudioFileSelect);
         }
 
         override protected function updateDisplay():void {
@@ -158,6 +179,30 @@ package com.litl.testchannel.view
         protected function onUpdateProfileSelect(e:Event):void {
             var updateProfile:String = updateProfileDropdown.selectedItem as String;
             model.service.setUpdateProfile(updateProfile);
+        }
+
+        protected function onAudioFileSelect(e:Event):void {
+            audioPlayer.unloadMedia();
+
+            var audioFile:String = audioFileDropdown.selectedItem as String;
+            if (audioFile == "") {
+                return;
+            }
+
+            try {
+                audioPlayer.url = audioFile;
+            } catch (err:Error) {
+                trace(err.name + ":  "+err.message);
+                audioPlayer.unloadMedia();
+            }
+        }
+
+        protected function onForceSaveState(e:ForceSaveStateMessage):void {
+            trace("force save state.  unloading audio player");
+            audioPlayer.unloadMedia();
+
+            trace("saving update profile");
+            model.service.deviceProperties.updateProfile = updateProfileDropdown.selectedItem as String;
         }
     }
 }
