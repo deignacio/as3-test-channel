@@ -185,10 +185,9 @@ package com.litl.testchannel.view
         }
 
         protected function onAudioFileSelect(e:Event):void {
-            audioPlayer.unloadMedia();
-
             var audioFile:String = audioFileDropdown.selectedItem as String;
             if (audioFile == "") {
+                audioPlayer.unloadMedia();
                 return;
             }
 
