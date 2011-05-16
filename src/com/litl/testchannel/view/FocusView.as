@@ -102,13 +102,16 @@ package com.litl.testchannel.view
             var files:Array = [ "",
                                 "testAudio0.mp3",
                                 "testAudio1.mp3",
-                                "testAudio2.mp3",
+                                "http://u10.sky.fm:80/sky_tophits_aacplus.flv",
+                                "http://u10.sky.fm:80/sky_lovemusic_aacplus.flv",
+                                "http://www.youtube.com/watch?v=D5FzCeV0ZFc",
+                                "http://www.youtube.com/watch?v=eGDBR2L5kzI",
                                 "nonexistent" ];
             audioFileDropdown = new DropDownList();
             audioFileDropdown.dataProvider = files;
             audioFileDropdown.itemRenderer = SelectableItemRenderer;
             audioFileDropdown.move(150, 250);
-            audioFileDropdown.setSize(200, 26);
+            audioFileDropdown.setSize(400, 50);
             audioFileDropdown.setStyle("dropdownWidth", 100);
             addChild(audioFileDropdown);
 
